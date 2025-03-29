@@ -1,13 +1,6 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  UserButton,
-} from "@clerk/nextjs";
-import { Sign } from "crypto";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function NavBar() {
   return (
