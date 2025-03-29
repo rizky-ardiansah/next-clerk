@@ -1,20 +1,38 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  UserButton,
+} from "@clerk/nextjs";
+import { Sign } from "crypto";
 
 export default function NavBar() {
   return (
     <header className="border-b">
       <div className="container mx-auto my-auto flex items-center justify-between h-16 px-4">
         <Link href="/" className="text-xl font-bold">
-          NextClerk🚀
+          NextBlog🚀
         </Link>
-        <div className="space-x-4">
-          <Link href="/dashboard">
-            <Button>Dashboard</Button>
-          </Link>
-          <Link href="/sign-in">
-            <Button variant={"outline"}>Sign In</Button>
-          </Link>
+        <div className="flex items-center gap-4">
+          <SignedIn>
+            <Link href="/dashboard">
+              <Button>Dashboard</Button>
+            </Link>
+            {/* <SignOutButton>
+              <Button variant="outline" className="text-red-700">
+                Sign Out
+              </Button>
+            </SignOutButton> */}
+            <UserButton />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton>
+              <Button variant="outline">Sign In</Button>
+            </SignInButton>
+          </SignedOut>
         </div>
       </div>
     </header>
