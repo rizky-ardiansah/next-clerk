@@ -1,0 +1,36 @@
+export const posts = [
+  {
+    id: 1,
+    title: "First Post",
+    content: "<h1>This is the content of the first post.</h1>",
+    authorId: "user_1",
+    author: {
+      id: "user_1",
+      email: "johndoe@gmail.com",
+      firstName: "John",
+      lastName: "Doe",
+      profileImage: "https://example.com/johndoe.jpg",
+      createdAt: new Date("2023-01-01T00:00:00.000Z"),
+      updatedAt: new Date("2023-01-01T00:00:00.000Z"),
+    },
+    createdAt: new Date("2023-01-01T00:00:00.000Z"),
+    updatedAt: new Date("2023-01-01T00:00:00.000Z"),
+  },
+  {
+    id: 2,
+    title: "Second Post",
+    content: "<h1>This is the content of the second post.</h1>",
+    authorId: "user_2",
+    author: {
+      id: "user_2",
+      email: "janedoe@gmail.com",
+      firstName: "Jane",
+      lastName: "Doe",
+      profileImage: "https://example.com/janedoe.jpg",
+      createdAt: new Date("2023-01-01T00:00:00.000Z"),
+      updatedAt: new Date("2023-01-01T00:00:00.000Z"),
+    },
+    createdAt: new Date("2023-01-01T00:00:00.000Z"),
+    updatedAt: new Date("2023-01-01T00:00:00.000Z"),
+  },
+];
