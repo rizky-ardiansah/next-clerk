@@ -1,8 +1,9 @@
 import BlogPostList from "@/components/blog-post-list";
+import Container from "@/components/container";
 
 export default async function Home() {
   return (
-    <main className="container mx-auto py-10 px-4 md:px-6">
+    <Container>
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Latest Post</h1>
         <p className="text-muted-foreground mt-2">
@@ -10,6 +11,6 @@ export default async function Home() {
         </p>
       </div>
       <BlogPostList />
-    </main>
+    </Container>
   );
 }
