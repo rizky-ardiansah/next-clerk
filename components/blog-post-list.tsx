@@ -1,4 +1,3 @@
-import { posts } from "@/lib/mock-data";
 import Link from "next/link";
 import {
   Card,
@@ -9,8 +8,16 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import DOMPurify from "isomorphic-dompurify";
+import { Post as PrismaPost, User } from "@prisma/client";
 
-export default function BlogPostList() {
+interface Post extends PrismaPost {
+  author: User;
+}
+interface BlogPostListProps {
+  posts: Post[];
+}
+
+export default function BlogPostList({ posts }: BlogPostListProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
