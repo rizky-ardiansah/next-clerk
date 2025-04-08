@@ -1,0 +1,118 @@
+"use client";
+
+import Container from "@/components/container";
+import RichTextEditor from "@/components/rich-text-editor";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { getPostForEdit, updatePost } from "@/lib/actions";
+import { SignedIn, useAuth } from "@clerk/nextjs";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useState } from "react";
+import { toast } from "sonner";
+
+export default function EditPostPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+  const router = useRouter();
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { userId, isLoaded, isSignedIn } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!SignedIn) {
+        return;
+      }
+
+      try {
+        const post = await getPostForEdit(id);
+        if (post.success) {
+          setTitle(post.data?.title || "");
+          setContent(post.data?.content || "");
+        }
+      } catch (error) {
+        console.error("Error fetching post:", error);
+        toast("Failed to fetch post. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (isLoaded) {
+      fetchPost();
+    }
+  }, [isLoaded, isSignedIn, router, id]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      if (!userId) {
+        throw new Error("User not authenticated");
+      }
+
+      const result = await updatePost(id, { title, content });
+
+      if (result.success) {
+        toast.success("Post Updated successfully!");
+        router.push(`/posts/${id}`);
+      } else {
+        toast.error("Failed to update post. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Container>
+      <div className="mb-6">
+        <Link href={`/posts/${id}`}>
+          <Button variant={"outline"} size="sm">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Home
+          </Button>
+        </Link>
+      </div>
+      <h1 className="text-3xl font-bold mb-8">Edit Post</h1>
+      <form className="max-w-3xl space-y-6" onSubmit={handleSubmit}>
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter your title"
+            className="bg-slate-50"
+            required
+          />
+        </div>
+        <div className="space-y-2 mt-4">
+          <Label htmlFor="content">Content</Label>
+          <RichTextEditor content={content} onChange={setContent} />
+        </div>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Saving..." : "Save Changes"}
+        </Button>
+      </form>
+    </Container>
+  );
+}

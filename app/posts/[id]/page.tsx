@@ -3,7 +3,8 @@ import RichTextEditor from "@/components/rich-text-editor";
 import { Button } from "@/components/ui/button";
 import { getPostById } from "@/lib/actions";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { auth } from "@clerk/nextjs/server";
+import { ArrowLeft, Edit } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -13,21 +14,31 @@ export default async function PostPage(props: {
   const params = await props.params;
   const { id } = params;
   const post = await getPostById(id);
-  console.log(post);
+  const { userId } = await auth();
 
   if (!post) {
     return notFound();
   }
 
+  const isAuthor = post.data?.authorId === userId;
+
   return (
     <Container>
-      <div className="mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <Link href="/">
           <Button variant="outline" size="sm">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
         </Link>
+        {isAuthor && (
+          <Link href={`/edit/${id}`}>
+            <Button variant={"outline"} size="sm">
+              <Edit className="mr-2 h-4 w-4" />
+              Edit
+            </Button>
+          </Link>
+        )}
       </div>
       <article>
         <h1 className="text-4xl font-bold mb-4">{post.data?.title}</h1>
