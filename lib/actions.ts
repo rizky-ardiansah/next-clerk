@@ -24,3 +24,21 @@ export async function createPost(data: CreatePostInput) {
     return { success: false };
   }
 }
+
+export async function getPostById(postId: string) {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: { author: true },
+    });
+
+    if (!post) {
+      return { success: false, message: "Post not found" };
+    }
+
+    return { success: true, data: post };
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return null;
+  }
+}

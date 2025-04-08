@@ -36,7 +36,7 @@ export default function BlogPostList({ posts }: BlogPostListProps) {
             <CardFooter className="text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <span>{`${post.author.firstName} ${post.author.lastName}`}</span>
-                <span>.</span>
+                <span> </span>
                 <time dateTime="{post.createdAt}">
                   {formatDate(post.createdAt)}
                 </time>
