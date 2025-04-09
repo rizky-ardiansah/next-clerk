@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import DOMPurify from "isomorphic-dompurify";
 import { formatDate } from "@/lib/utils";
+import DeletePostButton from "@/components/delete-post-button";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -63,10 +64,10 @@ export default async function DashboardPage() {
               className="h-full transition-all hover:shadow-md"
             >
               <CardHeader>
-                <CardTitle>{post.title}</CardTitle>
+                <CardTitle className="line-clamp-1">{post.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground line-clamp-2">
                   {DOMPurify.sanitize(post.content, {
                     ALLOWED_TAGS: [],
                   })}
@@ -79,7 +80,7 @@ export default async function DashboardPage() {
                   </time>
                 </div>
                 <div className="flex gap-2">
-                  <Link href={`/post/${post.id}`}>
+                  <Link href={`/posts/${post.id}`}>
                     <Button variant={"outline"} size="sm">
                       View
                     </Button>
@@ -90,6 +91,7 @@ export default async function DashboardPage() {
                       Edit
                     </Button>
                   </Link>
+                  <DeletePostButton id={post.id} />
                 </div>
               </CardFooter>
             </Card>

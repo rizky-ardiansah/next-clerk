@@ -9,7 +9,6 @@ export default async function Home() {
     },
     include: { author: true },
   });
-  console.log(posts);
 
   return (
     <Container>

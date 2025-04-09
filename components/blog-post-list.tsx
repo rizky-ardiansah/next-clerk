@@ -19,15 +19,15 @@ interface BlogPostListProps {
 
 export default function BlogPostList({ posts }: BlogPostListProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <Link key={post.id} href={`/posts/${post.id}`}>
           <Card className="h-full transition-all hover:shadow-md">
             <CardHeader>
-              <CardTitle>{post.title}</CardTitle>
+              <CardTitle className="line-clamp-1">{post.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-muted-foreground">
+              <div className="text-muted-foreground line-clamp-2">
                 {DOMPurify.sanitize(post.content, {
                   ALLOWED_TAGS: [],
                 })}
